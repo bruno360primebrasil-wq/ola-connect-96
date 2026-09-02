@@ -1,149 +1,27 @@
 import { createFileRoute } from "@tanstack/react-router";
-import {
-  ArrowRight,
-  BadgeCheck,
-  Building2,
-  CheckCircle2,
-  ChevronDown,
-  Clock3,
-  Droplets,
-  Factory,
-  Gauge,
-  HandCoins,
-  Home,
-  Leaf,
-  MapPin,
-  Menu,
-  Phone,
-  ShieldCheck,
-  Sparkles,
-  Truck,
-  Users,
-  Wrench,
-  X,
-} from "lucide-react";
-import { useState } from "react";
-
-export const Route = createFileRoute("/")({ component: Index });
-
-const phone = "5591980909686";
-const message = encodeURIComponent(
-  "Olá! Encontrei a Limpa Fossa Icoaraci pelo Google e gostaria de solicitar um orçamento.",
-);
-const whatsapp = `https://wa.me/${phone}?text=${message}`;
-
-const services = [
-  ["Limpeza de Fossa Séptica", "Sucção completa e higienização técnica para evitar transbordamentos e mau cheiro.", Droplets],
-  ["Sucção de Resíduos e Efluentes", "Remoção segura com equipamento profissional para residências e empresas.", Truck],
-  ["Desentupimento de Pia", "Desobstrução rápida da tubulação, sem sujeira e com diagnóstico cuidadoso.", Wrench],
-  ["Desentupimento de Ralo", "Eliminamos bloqueios e restabelecemos o escoamento correto da água.", Gauge],
-  ["Desentupimento de Vaso Sanitário", "Atendimento ágil para resolver entupimentos com segurança e precisão.", Home],
-  ["Desentupimento de Esgoto", "Solução técnica para redes de esgoto residenciais, comerciais e industriais.", Building2],
-  ["Desentupimento de Caixa de Gordura", "Limpeza profunda para evitar refluxo, odores e novas obstruções.", Sparkles],
-  ["Hidrojateamento Profissional", "Jatos de alta pressão removem incrustações sem danificar a tubulação.", Droplets],
-  ["Limpeza de Banheiro Químico", "Coleta e higienização responsável com cuidado ambiental.", Leaf],
-  ["Manutenção Preventiva", "Planos periódicos que reduzem emergências e custos inesperados.", ShieldCheck],
-] as const;
-
-const areas = ["Icoaraci", "Agulha", "Cruzeiro", "Ponta Grossa", "Maracacuera", "Paracuri", "Campina de Icoaraci", "Águas Negras", "Tenoné", "Outeiro"];
-
-const faqs = [
-  ["Quanto custa uma limpeza de fossa em Icoaraci?", "O valor depende do volume da fossa, do acesso ao local e do tipo de resíduo. Envie uma mensagem para receber uma avaliação rápida e um orçamento sem compromisso."],
-  ["A Limpa Fossa Icoaraci atende 24 horas?", "Sim. Atendemos emergências 24 horas por dia, inclusive aos finais de semana e feriados."],
-  ["Vocês atendem quais bairros?", "Atendemos Icoaraci e bairros próximos, incluindo Agulha, Cruzeiro, Ponta Grossa, Maracacuera, Paracuri, Campina de Icoaraci, Águas Negras, Tenoné e Outeiro."],
-  ["Como saber se a fossa está cheia?", "Mau cheiro, escoamento lento, refluxo e água acumulada são sinais comuns. Uma avaliação técnica confirma a causa e indica a solução correta."],
-  ["O serviço de limpa fossa faz muita sujeira?", "Não. Nossa equipe trabalha com equipamentos de sucção e procedimentos que mantêm o local organizado e reduzem qualquer impacto."],
-  ["Qual a diferença entre desentupimento e hidrojateamento?", "O desentupimento remove a obstrução. O hidrojateamento também lava as paredes da tubulação com alta pressão, removendo gordura e incrustações."],
-  ["Vocês atendem empresas e condomínios?", "Sim. Atendemos imóveis residenciais, condomínios, comércios e operações industriais, inclusive com manutenção preventiva."],
-  ["Como solicitar atendimento?", "Ligue para (91) 98090-9686 ou toque em qualquer botão de WhatsApp nesta página para falar diretamente com a equipe."],
-] as const;
-
-function track(event: string) {
-  if (typeof window !== "undefined") {
-    const dataLayer = ((window as Window & { dataLayer?: unknown[] }).dataLayer ||= []);
-    dataLayer.push({ event });
-  }
-}
-
-function WhatsAppButton({ label = "Solicitar orçamento", event = "click_whatsapp", light = false }: { label?: string; event?: string; light?: boolean }) {
-  return <a className={`cta ${light ? "cta-light" : ""}`} href={whatsapp} target="_blank" rel="noreferrer" onClick={() => track(event)}><span>{label}</span><ArrowRight size={18} /></a>;
-}
-
-function Index() {
-  const [menuOpen, setMenuOpen] = useState(false);
-  const schema = {
-    "@context": "https://schema.org",
-    "@graph": [
-      {
-        "@type": ["LocalBusiness", "HomeAndConstructionBusiness"],
-        "@id": "#empresa",
-        name: "Limpa Fossa Icoaraci 24 Horas",
-        image: "/limpa-fossa-icoaraci.png",
-        telephone: "+55 91 98090-9686",
-        priceRange: "$$",
-        address: { "@type": "PostalAddress", streetAddress: "Tv. Souza Franco, 844 - Agulha", addressLocality: "Belém", addressRegion: "PA", postalCode: "66812-430", addressCountry: "BR" },
-        areaServed: areas.map((name) => ({ "@type": "Place", name })),
-        openingHoursSpecification: { "@type": "OpeningHoursSpecification", dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"], opens: "00:00", closes: "23:59" },
-        contactPoint: { "@type": "ContactPoint", telephone: "+55 91 98090-9686", contactType: "customer service", availableLanguage: "Portuguese" },
-      },
-      ...services.map(([name, description]) => ({ "@type": "Service", name, description, provider: { "@id": "#empresa" }, areaServed: "Icoaraci, Belém - PA" })),
-      { "@type": "FAQPage", mainEntity: faqs.map(([name, answer]) => ({ "@type": "Question", name, acceptedAnswer: { "@type": "Answer", text: answer } })) },
-    ],
-  };
-
-  return (
-    <main>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
-      <div className="topbar"><div className="container topbar-inner"><span><Clock3 size={15} /> Atendimento emergencial 24 horas</span><a href="tel:+5591980909686" onClick={() => track("click_phone")}><Phone size={15} /> (91) 98090-9686</a></div></div>
-      <header className="header">
-        <div className="container nav-wrap">
-          <a className="brand" href="#inicio" aria-label="Limpa Fossa Icoaraci - início"><img src="/limpa-fossa-icoaraci.png" alt="Limpa Fossa Icoaraci" /></a>
-          <button className="menu-button" aria-label="Abrir menu" onClick={() => setMenuOpen(!menuOpen)}>{menuOpen ? <X /> : <Menu />}</button>
-          <nav className={menuOpen ? "nav open" : "nav"} aria-label="Navegação principal">
-            {[['Início','#inicio'],['Serviços','#servicos'],['Como funciona','#processo'],['Regiões','#regioes'],['Dúvidas','#duvidas']].map(([label, href]) => <a key={href} href={href} onClick={() => setMenuOpen(false)}>{label}</a>)}
-            <WhatsAppButton label="Falar com a equipe" event="click_orcamento" />
-          </nav>
-        </div>
-      </header>
-
-      <section className="hero" id="inicio">
-        <div className="hero-orb orb-one" /><div className="hero-orb orb-two" />
-        <div className="container hero-grid">
-          <div className="hero-copy">
-            <div className="eyebrow"><span /> Plantão em Icoaraci e região</div>
-            <h1>Limpa Fossa Icoaraci <em>— Atendimento 24h</em></h1>
-            <h2>Limpeza de Fossa, Desentupimento e Hidrojateamento em Icoaraci</h2>
-            <p>Equipe especializada, equipamentos profissionais e atendimento rápido para resolver seu problema com segurança, limpeza e responsabilidade ambiental.</p>
-            <div className="hero-actions"><WhatsAppButton label="Orçamento imediato!" event="click_hero_whatsapp" /><a className="phone-link" href="tel:+5591980909686" onClick={() => track("click_phone")}><Phone size={19} /><span><small>Ligue agora</small>(91) 98090-9686</span></a></div>
-            <div className="trust-row"><span><CheckCircle2 /> Atendimento 24h</span><span><CheckCircle2 /> Orçamento rápido</span><span><CheckCircle2 /> Serviço profissional</span></div>
-          </div>
-          <div className="hero-visual">
-            <div className="logo-stage"><img src="/limpa-fossa-icoaraci.png" alt="Caminhão limpa fossa da Limpa Fossa Icoaraci" /></div>
-            <div className="floating-card"><span className="pulse" /><div><strong>Equipe disponível</strong><small>Atendimento em Icoaraci</small></div></div>
-          </div>
-        </div>
-      </section>
-
-      <section className="quick-strip"><div className="container quick-grid">{([[Clock3,"24h por dia","Emergências e agendamentos"],[Truck,"Equipamento próprio","Agilidade no atendimento"],[Leaf,"Destino responsável","Cuidado ambiental"],[HandCoins,"Orçamento rápido","Pagamento facilitado"]] as const).map(([Icon,title,text])=><div className="quick-item" key={title}><Icon /><div><strong>{title}</strong><span>{text}</span></div></div>)}</div></section>
-
-      <section className="section" id="servicos"><div className="container"><div className="section-heading"><div><span className="kicker">Soluções completas</span><h2>Serviços profissionais para cada necessidade</h2></div><p>Do atendimento emergencial à manutenção preventiva, aplicamos a técnica certa para solucionar o problema com eficiência.</p></div><div className="services-grid">{services.map(([title,desc,Icon],i)=><article className="service-card" key={title}><span className="service-number">{String(i+1).padStart(2,'0')}</span><div className="icon-box"><Icon /></div><h3>{title}</h3><p>{desc}</p><a href={whatsapp} target="_blank" rel="noreferrer" onClick={()=>track("click_service_whatsapp")}>Pedir orçamento <ArrowRight size={16}/></a></article>)}</div></div></section>
-
-      <section className="price-section"><div className="container price-card"><div><span className="kicker kicker-light">Orçamento transparente</span><h2>Quanto custa um serviço de Limpa Fossa em Icoaraci?</h2><p>O preço varia conforme o volume, o acesso ao local, o tipo de resíduo e a técnica necessária. Fale com nossa equipe, explique a situação e receba uma orientação rápida, sem compromisso.</p><div className="price-points"><span><BadgeCheck /> Avaliação objetiva</span><span><BadgeCheck /> Sem valores escondidos</span></div></div><div className="price-action"><span>Atendimento imediato</span><strong>(91) 98090-9686</strong><WhatsAppButton label="Consultar agora" light event="click_orcamento" /></div></div></section>
-
-      <section className="section process" id="processo"><div className="container"><div className="center-heading"><span className="kicker">Como trabalhamos</span><h2>Um processo simples, seguro e eficiente</h2><p>Da primeira conversa à entrega, você acompanha cada etapa do serviço.</p></div><div className="steps">{[["01","Diagnóstico técnico","Entendemos o problema e avaliamos o local."],["02","Definição da técnica","Indicamos o procedimento e o equipamento adequados."],["03","Execução","Realizamos o serviço com agilidade, cuidado e limpeza."],["04","Teste final","Verificamos o resultado e orientamos sobre prevenção."]].map(([n,t,d])=><article className="step" key={n}><span>{n}</span><h3>{t}</h3><p>{d}</p></article>)}</div></div></section>
-
-      <section className="section regions" id="regioes"><div className="container regions-grid"><div><span className="kicker kicker-light">Chegamos até você</span><h2>Atendimento em Icoaraci e bairros próximos</h2><p>Nossa equipe atende residências, condomínios, comércios e indústrias em toda a região, inclusive em situações emergenciais.</p><div className="area-list">{areas.map(a=><span key={a}><MapPin size={16}/>{a}</span>)}</div><WhatsAppButton label="Consultar atendimento no meu bairro" light /></div><div className="map-card"><iframe title="Mapa da Limpa Fossa Icoaraci" src="https://www.google.com/maps?q=Tv.%20Souza%20Franco%2C%20844%20-%20Agulha%2C%20Bel%C3%A9m%20-%20PA%2C%2066812-430&output=embed" loading="lazy" referrerPolicy="no-referrer-when-downgrade" /><div className="map-address"><MapPin/><div><strong>Nossa base em Icoaraci</strong><span>Tv. Souza Franco, 844 - Agulha, Belém - PA</span></div></div></div></div></section>
-
-      <section className="section"><div className="container"><div className="section-heading"><div><span className="kicker">Por que escolher a gente</span><h2>Confiança do primeiro contato à finalização</h2></div><p>Estrutura profissional, atendimento humano e compromisso com a solução correta.</p></div><div className="benefits-grid">{([[Clock3,"Atendimento 24h"],[HandCoins,"Pagamento facilitado"],[Truck,"Equipamentos profissionais"],[Leaf,"Responsabilidade ambiental"],[Gauge,"Serviço rápido"],[Users,"Equipe especializada"],[Home,"Atendimento residencial"],[Factory,"Comercial e industrial"]] as const).map(([Icon,title])=><div className="benefit" key={title}><Icon/><span>{title}</span></div>)}</div></div></section>
-
-      <section className="values"><div className="container values-grid"><div className="values-copy"><span className="kicker kicker-light">Compromisso ambiental</span><h2>Eficiência hoje. Responsabilidade com o amanhã.</h2><p>Conduzimos cada serviço com foco em segurança, redução de impactos e manejo responsável dos resíduos. Cuidar da sua estrutura também é cuidar da cidade.</p><div className="values-list"><div><strong>Missão</strong><span>Resolver com agilidade, segurança e respeito.</span></div><div><strong>Visão</strong><span>Ser referência regional em serviços ambientais.</span></div><div><strong>Valores</strong><span>Ética, transparência, cuidado e excelência.</span></div></div></div><div className="eco-mark"><Leaf/><span>Atuação responsável</span><small>Procedimentos técnicos e compromisso ambiental em cada atendimento.</small></div></div></section>
-
-      <section className="section faq" id="duvidas"><div className="container faq-grid"><div><span className="kicker">Perguntas frequentes</span><h2>Tire suas dúvidas antes de solicitar o serviço</h2><p>Se ainda precisar de ajuda, nossa equipe está disponível pelo WhatsApp.</p><WhatsAppButton label="Falar com um especialista" /></div><div className="faq-list">{faqs.map(([q,a])=><details key={q}><summary>{q}<ChevronDown/></summary><p>{a}</p></details>)}</div></div></section>
-
-      <section className="final-cta"><div className="container final-inner"><div><span className="kicker kicker-light">Não deixe o problema aumentar</span><h2>Precisa de atendimento agora?</h2><p>Fale com a Limpa Fossa Icoaraci e receba orientação rápida para resolver sua emergência.</p></div><WhatsAppButton label="Chamar no WhatsApp" light event="click_orcamento" /></div></section>
-
-      <footer><div className="container footer-grid"><div><img src="/limpa-fossa-icoaraci.png" alt="Limpa Fossa Icoaraci"/><p>Limpeza de fossa, desentupimento e hidrojateamento com atendimento 24 horas em Icoaraci.</p></div><div><strong>Contato</strong><a href="tel:+5591980909686">(91) 98090-9686</a><a href={whatsapp} target="_blank" rel="noreferrer">WhatsApp 24 horas</a></div><div><strong>Endereço</strong><span>Tv. Souza Franco, 844 - Agulha</span><span>Belém - PA, 66812-430</span></div></div><div className="container footer-bottom"><span>© {new Date().getFullYear()} Limpa Fossa Icoaraci. Todos os direitos reservados.</span><span>Atendimento 24h • Icoaraci, Belém - PA</span></div></footer>
-      <a className="floating-whatsapp" href={whatsapp} target="_blank" rel="noreferrer" aria-label="Falar no WhatsApp" onClick={()=>track("click_whatsapp")}><Phone/></a>
-    </main>
-  );
-}
+import { Check, MapPin, Phone, RefreshCw } from "lucide-react";
+export const Route=createFileRoute("/")({component:Index});
+const wa="https://wa.me/5591980909686?text=Ol%C3%A1%21%20Encontrei%20a%20Limpa%20Fossa%20Icoaraci%20pelo%20Google%20e%20gostaria%20de%20solicitar%20um%20or%C3%A7amento.";
+const services=[
+["Limpeza de Fossa Séptica","Caminhão limpa fossa para sucção completa e descarte seguro.","Realizamos a limpeza completa de fossas sépticas, caixas de inspeção e reservatórios com caminhão de sucção de alta potência.",["Remoção completa","Eliminação de odores","Prevenção de danos","Descarte correto","Atendimento rápido"]],
+["Sucção de Resíduos e Efluentes","Remoção técnica de resíduos líquidos e sólidos","Sucção de caixas de gordura, tanques, poços e reservatórios com equipamentos de alta capacidade.",["Alta eficiência","Evita contaminação","Processo seguro","Atendimento rápido"]],
+["Desentupimento de Pia","Solução rápida sem quebra","Utilizamos sondas elétricas para remover gordura e resíduos acumulados nas tubulações.",["Sem quebra","Remoção completa","Resultado imediato"]],
+["Desentupimento de Ralo","Desobstrução completa de ralos internos e externos","Eliminamos bloqueios causados por sujeira, sabão e resíduos utilizando equipamentos profissionais.",["Fluxo normal da água","Evita alagamentos","Garante fluxo contínuo","Sem danos"]],
+["Desentupimento de Vaso Sanitário","Técnica segura e eficiente","Utilizamos pressão controlada para remover obstruções sem danificar o vaso.",["Sem sujeira","Sem danos à louça","Execução rápida","Ideal para residências e condomínios"]],
+["Desentupimento de Esgoto","Limpeza profunda com hidrojato","Realizamos limpeza da rede de esgoto com jato de alta pressão, removendo resíduos e incrustações.",["Solução duradoura","Elimina odores","Limpeza completa","Casas, comércios e condomínios"]],
+["Desentupimento de Caixa de Gordura","Limpeza essencial para evitar entupimentos","Removemos gordura acumulada e resíduos, garantindo funcionamento correto da caixa.",["Evita entupimentos","Reduz odores","Reduz risco de infestação","Descarte correto"]],
+["Hidrojateamento Profissional","Alta pressão para limpeza profunda","Utilizamos hidrojato para limpar tubulações, fossas e redes pluviais sem danificar o sistema.",["Limpeza profunda","Alta eficiência","Resultado duradouro"]],
+["Limpeza de Banheiro Químico","Higienização completa e segura","Realizamos limpeza de banheiros químicos com sucção, higienização e reposição de produtos.",["Higiene total","Ideal para eventos","Serviço rápido e seguro","Descarte correto"]],
+["Manutenção Preventiva","Evite emergências e gastos desnecessários","Planos periódicos de limpeza e inspeção para manter o sistema funcionando corretamente.",["Reduz problemas","Evita custos altos","Aumenta durabilidade"]]] as const;
+const faqs=[["Vocês atendem 24h em Icoaraci?","Sim. Funcionamos 24h por dia, incluindo finais de semana e feriados."],["O orçamento tem custo?","Não. Realizamos avaliação e orçamento gratuito antes da execução."],["Vocês também fazem desentupimento?","Sim. Atendemos pia, ralo, vaso, esgoto e caixa de gordura."],["O serviço causa quebra ou sujeira?","Não. Utilizamos técnicas modernas para uma execução limpa e rápida."],["O desentupimento é sem quebra?","Sim. Nossas técnicas são não invasivas."],["Atendem empresas e condomínios?","Sim. Atendemos residências, comércios, indústrias, obras e condomínios."]] as const;
+const Btn=({children}:{children:string})=><a className="ref-btn" href={wa}>{children}<Phone size={15}/></a>;
+function Index(){return <main><header className="ref-header"><div className="ref-container"><img src="/limpa-fossa-icoaraci.png"/><a className="ref-btn" href="tel:+5591980909686">Ligue 24h! <Phone size={16}/></a></div></header>
+<section className="ref-hero"><div className="ref-container hero-inner"><div><span className="ref-kicker">LIMPA FOSSA ICOARACI — ATENDIMENTO 24H</span><h1>Limpeza de Fossa,<br/>Desentupimento e<br/>Hidrojateamento em Icoaraci</h1><p>A <strong>Limpa Fossa Icoaraci</strong> oferece serviços completos de limpeza de fossa, sucção, hidrojateamento e desentupimento 24h.<br/>Atendemos toda a região com rapidez, equipe experiente e execução segura para residências, comércios e indústrias.</p><Btn>ORÇAMENTO IMEDIATO!</Btn></div></div></section>
+<section className="ref-light services"><div className="ref-container"><div className="ref-title center"><span className="ref-kicker">SERVIÇOS ESPECIALIZADOS DE DESENTUPIMENTO</span><h2>Serviços Técnicos em Limpa Fossa e<br/>Desentupimento — Atuação<br/>Completa para Icoaraci e região</h2><p>A <strong>Limpa Fossa Icoaraci</strong> oferece soluções completas em <strong>limpeza de fossa séptica, sucção de resíduos, hidrojateamento e serviços de desentupidora 24h.</strong> Trabalhamos com caminhão limpa fossa e equipamentos modernos para garantir execução rápida, segura e sem transtornos.</p><p>Atendemos residências, comércios, indústrias, obras e condomínios em Icoaraci e região.</p></div><div className="service-grid">{services.map(([title,sub,text,benefits])=><article className="ref-card" key={title}><Check/><h3>{title}</h3><strong>{sub}</strong><p>{text}</p><b>Benefícios:</b><ul>{benefits.map(x=><li key={x}>{x}</li>)}</ul><Btn>Faça orçamento aqui</Btn></article>)}</div></div></section>
+<section className="ref-dark split"><div className="ref-container split-grid"><img src="https://limpafossabelem24h.com.br/wp-content/uploads/2025/11/desentupidora-10.webp"/><div><span className="ref-kicker">ATENDIMENTO ESPECIALIZADO 24H</span><h2>Quanto custa um serviço de Limpa Fossa em Icoaraci?</h2><p>Trabalhamos com total transparência. Os valores variam conforme o tipo de serviço, volume de resíduos e acesso ao local.</p><p>Oferecemos orçamento gratuito, com análise técnica rápida para indicar a melhor solução.</p><p>Todos os serviços incluem orientação preventiva e garantia de execução.</p><strong>Solicite seu orçamento com atendimento imediato!</strong><Btn>SOLICITAR ORÇAMENTO</Btn></div></div></section>
+<section className="ref-light areas"><div className="ref-container"><div className="gallery"><img src="https://limpafossabelem24h.com.br/wp-content/uploads/2025/11/desentupidora-10.webp"/><img src="https://limpafossabelem24h.com.br/wp-content/uploads/2025/11/desentupidora-7.webp"/><img src="https://limpafossabelem24h.com.br/wp-content/uploads/elementor/thumbs/desentupidora-13-1-re7pbtog2vqi1runprsodatai4l7sol4xritdhzr9s.webp"/></div><div className="areas-copy"><span className="ref-kicker">TODOS OS DIAS RESOLVENDO SEU PROBLEMA</span><h2>Áreas Atendidas —<br/>Atendimento 24h</h2><h3>Chegamos rápido até você com caminhão próprio e equipe especializada</h3><p>Contamos com caminhão limpa fossa próprio, equipamentos de alta capacidade e equipe técnica preparada para atender com agilidade.</p><p>Nossa base está localizada na <strong>Tv. Souza Franco, 844 – Agulha</strong>, facilitando o deslocamento rápido.</p><p>Trabalhamos 24 horas por dia, inclusive aos finais de semana e feriados.</p><strong>Regiões atendidas:</strong><div className="pins">{["Icoaraci","Agulha","Cruzeiro","Ponta Grossa","Maracacuera","Paracuri","Campina de Icoaraci","Águas Negras","Tenoné","Outeiro"].map(x=><span key={x}><MapPin/> {x}</span>)}</div><Btn>FALE COM NOSSO ESPECIALISTA</Btn></div></div></section>
+<section className="ref-dark process"><div className="ref-container"><span className="ref-kicker">COMO TRABALHAMOS NA PRÁTICA</span><h2>Veja como funciona<br/>nosso processo de<br/>limpeza de fossa e<br/>desentupimento</h2><h3>Clareza e transparência em cada etapa.</h3><div className="process-grid">{[["Diagnóstico técnico","Identificação do problema"],["Definição da técnica","Escolha do método ideal"],["Execução rápida","Sem sujeira e sem quebra"],["Teste final","Verificação completa"]].map(([a,b])=><div key={a}><RefreshCw/><strong>{a}</strong><span>{b}</span></div>)}</div></div></section>
+<section className="ref-light why"><div className="ref-container"><span className="ref-kicker">DESENTUPIDORA 24 HORAS</span><h2>Por que escolher a<br/>Limpa Fossa Icoaraci</h2><h3>Segurança e qualidade em cada atendimento</h3><div className="why-list">{["Atendimento 24h","Orçamento gratuito","Pagamento facilitado","Equipamentos modernos","Descarte responsável","Serviço rápido"].map(x=><div key={x}>{x}</div>)}</div><div className="mission-grid">{[["Missão","Prestar serviços com excelência, rapidez e responsabilidade, garantindo segurança e satisfação."],["Visão","Ser referência em Icoaraci e região pela qualidade, agilidade e compromisso ambiental."],["Valores","Ética, transparência, compromisso com o cliente, responsabilidade ambiental e qualidade técnica."]].map(([a,b])=><article key={a}><Check/><h3>{a}</h3><p>{b}</p></article>)}</div></div></section>
+<section className="banner"><div className="ref-container"><h2>Chega de mau cheiro, risco de<br/>transbordamento e dor de cabeça —<br/>resolvemos hoje. Atendimento imediato com<br/>equipe técnica e garantia.</h2><p>Atendimento rápido e sem sujeira — fale com um especialista agora.</p><Btn>FALAR COM UM ESPECIALISTA</Btn></div></section>
+<section className="ref-light faq"><div className="ref-container"><div className="ref-title center"><span className="ref-kicker">[ FAQ ]</span><h2>Perguntas frequentes sobre limpa fossa e<br/>desentupimento em Icoaraci</h2></div><div className="faq-grid">{faqs.map(([q,a])=><details key={q}><summary>{q}<b>+</b></summary><p>{a}</p></details>)}</div></div></section>
+<footer className="ref-footer"><div className="ref-container footer-top"><img src="/limpa-fossa-icoaraci.png"/><div><h3>Contato</h3><p>Limpa Fossa Icoaraci</p><p><MapPin/> Tv. Souza Franco, 844 - Agulha, Belém - PA</p><p><Phone/> (91) 98090-9686</p><p>Horário de funcionamento: Aberto 24 horas</p></div></div><div className="ref-container copyright">2026 – Limpa Fossa Icoaraci. Todos os direitos reservados | Desenvolvido por Agência Digitales 360.</div></footer><a className="float-wa" href={wa}><Phone/></a></main>}
