@@ -4,3 +4,14 @@
 #lovable-badge {
   display: none !important;
 }
+
+/* Espaçamento do CTA na seção de orçamento */
+.split .split-grid > div > strong {
+  display: block;
+  margin-top: 28px;
+}
+
+.split .ref-btn {
+  display: flex !important;
+  margin-top: 24px;
+}
