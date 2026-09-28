@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-# O sitemap será vinculado quando o domínio definitivo for informado.
+Sitemap: https://limpafossaicoaraci.com.br/sitemap.xml
